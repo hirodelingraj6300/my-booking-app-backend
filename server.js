@@ -3,6 +3,9 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { testConnection } = require('./config/db');
+const slotRoutes = require("./routes/slotRoutes");
+
+
 
 const app = express();
 
@@ -14,6 +17,7 @@ app.use(express.json());
 app.use('/api/test', require('./routes/testRoutes'));
 app.use('/api/contact', require('./routes/contactRoutes'));
 app.use("/api/bookings", require("./routes/bookingRoutes"));
+app.use("/api/slots", slotRoutes);
 
 
 // Root

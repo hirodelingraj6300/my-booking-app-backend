@@ -24,37 +24,23 @@ router.post('/', async (req, res) => {
       [name, phone, email, description]
     );
 
+    // prepare data for templates
+    const inquiryData = { name, phone, email, productDescription: description };
+
     // 2️⃣ Send Email to Admin
-    const adminHtml = `
-      <h2>New Inquiry Received</h2>
-      <p><b>Name:</b> ${name}</p>
-      <p><b>Phone:</b> ${phone}</p>
-      <p><b>Email:</b> ${email}</p>
-      <p><b>Description:</b><br/> ${description}</p>
-    `;
-     await sendEmail({
-      email: process.env.EMAIL_USER,
+    await sendEmail({
+      to: process.env.ADMIN_EMAIL,
       subject: "New User Inquiry",
-      html: userInquiryTemplate(name, phone, email, description),
+      html: userInquiryTemplate(inquiryData),
     });
 
     // 3️⃣ Send Confirmation Email to User
-    const userHtml = `
-      <h2>Hi ${name},</h2>
-      <p>Thank you for contacting <b>Construction & Interiors</b>. We have received your request.</p>
-      <h3>Your Inquiry:</h3>
-      <p><b>Phone:</b> ${phone}</p>
-      <p><b>Email:</b> ${email}</p>
-      <p><b>Description:</b><br/> ${description}</p>
-      <p>Our team will contact you shortly.</p>
-      <br/>
-      <p>Regards,<br/>Construction & Interiors Team</p>
-    `;
-        await sendEmail({
-      email,
+    await sendEmail({
+      to: email,
       subject: "Your Inquiry with E-Appointment",
-      html: userInquiryTemplate(name, phone, email, description ),
+      html: userInquiryTemplate(inquiryData),
     });
+
     res.json({ message: 'Inquiry saved and emails sent ✅' });
   } catch (err) {
     console.error('❌ Contact Route Error:', err.message);
