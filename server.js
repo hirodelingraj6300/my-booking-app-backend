@@ -1,5 +1,9 @@
 // server.js
 require('dotenv').config();
+console.log("🌍 ENV file loaded:");
+console.log("DB_HOST =", process.env.DB_HOST);
+console.log("DB_NAME =", process.env.DB_NAME);
+console.log("DB_USER =", process.env.DB_USER);
 const express = require('express');
 const cors = require('cors');
 const { testConnection } = require('./config/db');
