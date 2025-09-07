@@ -6,13 +6,14 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-     "dev:local": "dotenv -e .env.local -- node server.js",
-  "dev:railway": "dotenv -e .env.railway -- node server.js"
+    "dev:local": "dotenv -e .env.local -- node server.js",
+    "dev:railway": "dotenv -e .env.railway -- node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sendgrid/mail": "^8.1.5",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",

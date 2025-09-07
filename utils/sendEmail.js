@@ -1,29 +1,20 @@
 // backend/utils/sendEmail.js
-const nodemailer = require("nodemailer");
-require("dotenv").config();
+const sgMail = require('@sendgrid/mail');
+require('dotenv').config();
 
-const sendEmail = async (options) => {
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+const sendEmail = async ({ to, subject, html }) => {
   try {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
+    await sgMail.send({
+      to,
+      from: process.env.ADMIN_EMAIL, // must be verified in SendGrid
+      subject,
+      html,
     });
-
-    const mailOptions = {
-      from: `"E-Appointment Team" <${process.env.EMAIL_USER}>`,
-      to: options.to,   // ✅ FIXED: always use "to"
-      subject: options.subject,
-      html: options.html,
-    };
-
-    console.log("📧 Sending email to:", options.to); // debug log
-    await transporter.sendMail(mailOptions);
-    console.log("📩 Email sent successfully");
+    console.log('📩 Email sent successfully');
   } catch (error) {
-    console.error("❌ Email error:", error.message);
+    console.error('❌ Email error:', error.response ? error.response.body : error.message);
   }
 };
 
